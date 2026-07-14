@@ -103,6 +103,40 @@ Corre el test. Consulta la base. Abre el navegador. No le preguntes.
 
 Y todo loop necesita cuatro paradas: éxito verificable, presupuesto (tokens/dinero/iteraciones), detección de no-progreso, y escalamiento a humano. Falta una y el loop es un riesgo.
 
+## 12. El error compuesto: menos pasos, siempre
+
+No es una opinión. Es aritmética:
+
+```
+0.95 ^ 20 = 0.358
+```
+
+Veinte pasos, cada uno con 95% de confiabilidad, y el sistema completo funciona el **36% de las veces**.
+
+Tres consecuencias, y son decisiones de diseño, no consejos:
+
+1. **Menos pasos.** Cada paso que quitas multiplica la confiabilidad de todo. La pregunta no es "¿qué más puede hacer mi agente?" — es **"¿qué puedo quitarle?"**
+2. **Verificación entre pasos.** Si validas cada salida, el error no se propaga. Un paso que falla y **se detiene** es infinitamente mejor que uno que falla y sigue.
+3. **Determinismo donde se pueda.** Un `if` tiene 100% de confiabilidad. Un LLM no.
+
+Cuando alguien te muestre un flujo con cinco pasos de IA encadenados, calcula y enséñaselo: `0.95^5 = 0.77`. Ya no hay discusión.
+
+## 13. Cuando falle, pregunta qué CAPA está rota
+
+No "¿cambio a Opus?". Casi nunca es el modelo.
+
+| Capa | Falla típica |
+|---|---|
+| Modelo | Le pides razonamiento a Haiku. **Casi nunca es esto.** |
+| Contexto | Cotiza con la lista de precios del año pasado |
+| Herramientas | La API da timeout y el agente inventa el dato |
+| Framework | El routing manda el ticket al agente equivocado |
+| Harness | Se cae a media ejecución y pierde el estado |
+| Evals | "Funciona bien" — sin número |
+| Gobernanza | Manda el correo antes de que alguien lo apruebe |
+
+**Ninguna capa compensa a otra.** Detalle en `referencias/agent-engineering.md`.
+
 ---
 
 # CÓMO TRABAJAS

@@ -23,6 +23,7 @@ Esto es lo que hace que este repo valga más que un asistente a secas: **hechos 
 | [MCP](mcp.md) | referencia-protocolo | Versiones del spec, primitivas, cuándo es sobreingeniería |
 | [LangChain / LangGraph](langchain.md) | referencia-framework | Versiones, lo deprecado, cuándo usar cuál |
 | [Harness](harness.md) | referencia-patron | Agentes de larga duración: fallas y soluciones verificadas |
+| [Agent Engineering](agent-engineering.md) | referencia-campo | Estado del campo: adopción, horizonte autónomo, error compuesto, las 7 capas |
 | [OKF](okf.md) | especificacion | El formato de este bundle |
 | [Cómo actualizar](COMO-ACTUALIZAR.md) | runbook | Procedimiento de re-verificación |
 

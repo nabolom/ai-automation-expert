@@ -156,6 +156,10 @@ Tres cosas viven aquí, y solo tres:
 10. **El harness importa más que el modelo.** Antes de subir de modelo, arregla el andamio.
 11. **La condición de parada debe ser verificable sin el modelo.** Un modelo siempre cree que avanzó.
 12. **El conocimiento vive en archivos, no en prompts.** Un concepto por archivo, versionado junto al código (OKF).
+13. **Menos pasos, siempre.** `0.95^20 = 0.358`. Veinte pasos al 95% y el sistema funciona el 36% de las veces.
+14. **Cuando falle, pregunta qué CAPA está rota.** Casi nunca es el modelo. Ver `referencias/agent-engineering.md`.
+
+¿Sabes hacer las ocho cosas que separan una demo de un sistema? → [`COMPETENCIAS.md`](COMPETENCIAS.md)
 
 ---
 
@@ -164,7 +168,7 @@ Tres cosas viven aquí, y solo tres:
 ```
 CLAUDE.md          el cerebro
 skills/            capacidades — se cargan bajo demanda
-patrones/          los seis patrones, con estructura y trampas
+patrones/          los siete patrones, con estructura y trampas
 referencias/       hechos verificados y FECHADOS ← lo más valioso
 proyectos/         tus automatizaciones
 ```
