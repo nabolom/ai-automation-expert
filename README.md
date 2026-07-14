@@ -14,7 +14,7 @@ No es un chatbot de curso. Es infraestructura: la clonas una vez y te sirve para
 
 #### macOS
 
-1. **Homebrew** (gestor de paquetes). Si no lo tienes:
+1. **Homebrew** (gestor de paquetes). Si no lo tienes, abre Terminal y pega:
 
    ```bash
    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -48,11 +48,59 @@ No es un chatbot de curso. Es infraestructura: la clonas una vez y te sirve para
 
 ---
 
+### Paso 0.5 — Valida que tienes todo
+
+Antes de seguir, corre estos tres comandos. Los tres deben devolver un número de versión sin errores:
+
+```bash
+node --version    # debe decir v18.x o superior
+npm --version     # debe decir 9.x o superior
+git --version     # debe decir git version 2.x o superior
+```
+
+Si alguno dice `command not found`, revisa el paso correspondiente arriba.
+
+---
+
 ### Paso 1 — Instala Claude Code
 
 ```bash
 npm install -g @anthropic-ai/claude-code
 ```
+
+**⚠️ Si te sale un warning de `allow-scripts`** (algo como `npm warn allow-scripts 1 package has install scripts not yet covered...`), significa que npm bloqueó el script de post-instalación por seguridad. Claude Code necesita ese script para funcionar. Corre esto en su lugar:
+
+```bash
+npm install -g --allow-scripts=@anthropic-ai/claude-code @anthropic-ai/claude-code
+```
+
+Para que no te lo vuelva a pedir en futuras actualizaciones:
+
+```bash
+npm config set allow-scripts=@anthropic-ai/claude-code --location=user
+```
+
+**Verifica que se instaló correctamente:**
+
+```bash
+claude --version
+```
+
+Debe devolver un número de versión (ej. `2.1.209`). Si dice `command not found: claude`, npm no tiene su directorio global en tu PATH. Solución:
+
+```bash
+# Verifica dónde instaló npm el binario:
+npm bin -g
+
+# Agrega ese directorio a tu PATH (en macOS/zsh):
+echo 'export PATH="'$(npm bin -g)'":$PATH' >> ~/.zshrc
+source ~/.zshrc
+
+# Ahora sí:
+claude --version
+```
+
+---
 
 ### Paso 2 — Clona este repo y entra
 
@@ -61,6 +109,10 @@ git clone https://github.com/nabolom/ai-automation-expert.git mi-automatizacion
 cd mi-automatizacion
 claude
 ```
+
+Al entrar al directorio y correr `claude`, el agente lee automáticamente `CLAUDE.md` y carga toda la doctrina, el mapa del repo y las reglas de comportamiento. No necesitas configurar nada más.
+
+---
 
 ### Paso 3 — Arranca tu primera automatización
 
