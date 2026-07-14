@@ -8,20 +8,69 @@ No es un chatbot de curso. Es infraestructura: la clonas una vez y te sirve para
 
 ---
 
-## Arranque (5 minutos)
+## Arranque
+
+### Paso 0 — Instala los prerequisitos
+
+#### macOS
+
+1. **Homebrew** (gestor de paquetes). Si no lo tienes:
+
+   ```bash
+   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+   ```
+
+2. **Node.js** (incluye npm — no hace falta instalar npm por separado):
+
+   ```bash
+   brew install node
+   ```
+
+3. **Git** — normalmente ya viene con macOS o con las Command Line Tools de Xcode. Si falta:
+
+   ```bash
+   brew install git
+   ```
+
+   O alternativamente:
+
+   ```bash
+   xcode-select --install
+   ```
+
+#### Windows
+
+1. **Node.js LTS** — descárgalo directo desde [nodejs.org](https://nodejs.org/) (el instalador trae npm incluido). Homebrew **no aplica** en Windows.
+
+2. **Git** — descárgalo desde [git-scm.com](https://git-scm.com/download/win) si no lo tienes.
+
+3. Claude Code corre nativo en Windows (PowerShell o cmd). Si prefieres un entorno tipo Linux, puedes usar WSL.
+
+---
+
+### Paso 1 — Instala Claude Code
 
 ```bash
-npm install -g @anthropic-ai/claude-code   # requiere Node.js 18+
-git clone <URL-DEL-REPO> mi-automatizacion
+npm install -g @anthropic-ai/claude-code
+```
+
+### Paso 2 — Clona este repo y entra
+
+```bash
+git clone https://github.com/nabolom/ai-automation-expert.git mi-automatizacion
 cd mi-automatizacion
 claude
 ```
 
-Y luego:
+### Paso 3 — Arranca tu primera automatización
+
+Dentro de Claude Code, escribe:
 
 ```
 /arrancar
 ```
+
+El agente te va a conducir paso a paso: elegir un proceso, mapearlo, clasificar cada paso, identificar el patrón, medir la línea base y definir el alcance. Al terminar tendrás los archivos de tu proyecto en `proyectos/`.
 
 ---
 
