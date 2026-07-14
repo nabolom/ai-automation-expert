@@ -102,15 +102,27 @@ claude --version
 
 ---
 
-### Paso 2 — Clona este repo y entra
+### Paso 2 — Crea tu copia del repo
+
+**No hagas fork ni clones directo.** Usa el botón de template para tener tu propio repo con permisos de escritura:
+
+1. Ve a [github.com/nabolom/ai-automation-expert](https://github.com/nabolom/ai-automation-expert)
+2. Click en el botón verde **“Use this template”** → **“Create a new repository”**
+3. Pon el nombre que quieras (ej. `mi-automatizacion`)
+4. Márcalo como **Private** — tus procesos de negocio no tienen por qué ser públicos
+5. Click en **“Create repository”**
+
+Ahora clona **tu** repo (el que acabas de crear, no el mío):
 
 ```bash
-git clone https://github.com/nabolom/ai-automation-expert.git mi-automatizacion
-cd mi-automatizacion
+git clone https://github.com/TU-USUARIO/TU-REPO.git
+cd TU-REPO
 claude
 ```
 
 Al entrar al directorio y correr `claude`, el agente lee automáticamente `CLAUDE.md` y carga toda la doctrina, el mapa del repo y las reglas de comportamiento. No necesitas configurar nada más.
+
+Cuando hagas cambios (prompts, proyectos, referencias nuevas), `git push` funciona porque es **tu** repo.
 
 ---
 
