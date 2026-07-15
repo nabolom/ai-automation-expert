@@ -112,9 +112,31 @@ claude --version
 4. Márcalo como **Private** — tus procesos de negocio no tienen por qué ser públicos
 5. Click en **“Create repository”**
 
-Ahora clona **tu** repo (el que acabas de crear, no el mío):
+Ahora clona **tu** repo (el que acabas de crear, no el mío).
+
+**⚠️ Antes de clonar: elige dónde quieres que viva tu proyecto.**
+
+`git clone` crea la carpeta **donde estés parado en la terminal**. Si no sabes dónde estás, corre `pwd` primero. Si quieres tenerlo ordenado, créate una carpeta antes:
 
 ```bash
+# 1. Verifica dónde estás parado:
+pwd
+
+# 2. (Opcional) Crea una carpeta para tus proyectos de IA y entra a ella:
+mkdir ~/proyectos-ia
+cd ~/proyectos-ia
+
+# 3. Ahora sí, clona tu repo aquí:
+git clone https://github.com/TU-USUARIO/TU-REPO.git
+cd TU-REPO
+claude
+```
+
+Si prefieres otro lugar (Escritorio, Documentos, donde sea), simplemente haz `cd` ahí antes de clonar:
+
+```bash
+# Ejemplo: clonar en el Escritorio
+cd ~/Desktop
 git clone https://github.com/TU-USUARIO/TU-REPO.git
 cd TU-REPO
 claude
