@@ -164,52 +164,117 @@ El agente te va a conducir paso a paso: elegir un proceso, mapearlo, clasificar 
 
 En la Sesión 1 diseñaste tu sistema y quedaron una o dos decisiones en manos de la IA. La Sesión 2 responde una sola pregunta: **¿cuánto acierta esa decisión?** No "se ve bien". Un número.
 
-Para eso tu agente tiene el comando `/eval`. Así lo usas de principio a fin.
+### Primero: ¿qué es un eval?
 
-### Paso 0 — Trae el comando a TU repo
+Un eval es **un caso de prueba con dos cosas. Nada más:**
 
-Si creaste tu repo desde esta plantilla **antes** de la Sesión 2, tu copia no tiene `/eval` todavía (los repos creados desde template no reciben actualizaciones automáticas). Tráelo con estos comandos, parado dentro de tu repo:
+| Parte | Qué es | Ejemplo |
+|---|---|---|
+| **Input** | Lo que entra a tu sistema | Correo: «su producto llegó roto» |
+| **Salida esperada** | Lo que DEBERÍA salir, escrito por ti antes de correr nada | `categoría: queja` |
+
+No es una herramienta cara ni un framework. Con diez de estos tienes con qué medir.
+
+**La regla que lo vuelve real:** la salida esperada tiene que poder verificarse **sin preguntarle al modelo si acertó**. Un campo concreto: una categoría, un sí/no, un valor.
+
+| ✅ Salida esperada bien escrita | ❌ Mal escrita (no verificable) |
+|---|---|
+| `categoría: queja` | "que clasifique bien el correo" |
+| `resultado: escalar` | "que se dé cuenta de que falta la OC" |
+| `monto: 14200` | "una respuesta razonable" |
+
+Si para saber si acertó tendrías que opinar, el caso está mal escrito.
+
+### ¿Y qué es "el prompt" que vamos a medir?
+
+Es la instrucción que tu sistema le da a Claude para tomar SU decisión — la que quedó como IA en tu `flujo.md` de la Sesión 1. Vive en un archivo de tu proyecto: `proyectos/<tu-proyecto>/prompts.md`. Si aún no lo tienes, el agente te ayuda a crearlo en el Paso 1.
+
+Cada vez que lo cambies, la versión anterior se queda escrita (v0, v1, v2…). Nunca borres una versión: comparar los números entre versiones es justamente el punto.
+
+### Dónde se hace cada cosa (no te pierdas)
+
+Vas a alternar entre dos lugares que se ven parecidos pero no son lo mismo:
+
+| Lugar | Cómo se ve | Qué haces ahí |
+|---|---|---|
+| **Terminal** | El prompt de tu sistema (`%` o `$`) | Comandos como `ls`, `curl`, `git`, y arrancar `claude` |
+| **Claude Code** | Conversación con el agente (entraste con `claude`) | Hablar con el agente y correr `/eval`, `/arrancar`, etc. |
+
+Para salir de Claude Code y volver a la terminal: `Ctrl+C` (o escribe `/exit`). Para volver a entrar: `claude`.
+
+---
+
+### Paso 0 — Trae el comando `/eval` y la plantilla a TU repo 📍 EN LA TERMINAL
+
+Si creaste tu repo desde esta plantilla **antes** de la Sesión 2, tu copia no tiene `/eval` ni la plantilla de evals (los repos creados desde template NO reciben actualizaciones automáticas — son una foto del día que los creaste).
+
+Abre la terminal y entra a tu repo (si no sabes dónde quedó, es la carpeta donde clonaste; corre `pwd` para ver dónde estás):
 
 ```bash
-# Verifica si ya lo tienes:
-ls .claude/commands/
-# Si ves eval.md en la lista, ya está: salta al Paso 1.
+cd ~/proyectos-ia/TU-REPO   # ajusta la ruta a donde clonaste el tuyo
+```
 
-# Si NO está, descárgalo directo de la plantilla:
+Verifica si ya tienes el comando:
+
+```bash
+ls .claude/commands/
+```
+
+Si en la lista aparece `eval.md`, ya está: salta al Paso 1. Si NO aparece, copia y pega estas dos líneas (descargan el comando y la plantilla directo de este repo):
+
+```bash
 curl -o .claude/commands/eval.md https://raw.githubusercontent.com/nabolom/ai-automation-expert/main/.claude/commands/eval.md
+curl -o proyectos/PLANTILLA-evals.md https://raw.githubusercontent.com/nabolom/ai-automation-expert/main/proyectos/PLANTILLA-evals.md
+```
 
-# Confirma que llegó:
-ls .claude/commands/
+Confirma que llegaron y guárdalos en tu repo:
 
-# Guárdalo en tu repo:
-git add .claude/commands/eval.md
-git commit -m "comando: /eval"
+```bash
+ls .claude/commands/          # debe aparecer eval.md
+ls proyectos/                 # debe aparecer PLANTILLA-evals.md
+
+git add .claude/commands/eval.md proyectos/PLANTILLA-evals.md
+git commit -m "sesion 2: comando /eval y plantilla de evals"
 git push
 ```
 
-Si tenías Claude Code abierto, ciérralo y vuelve a entrar (`claude`) para que detecte el comando nuevo.
+**Importante:** si tenías Claude Code abierto, ciérralo (`Ctrl+C`) y vuelve a entrar (`claude`). Los comandos nuevos solo se detectan al arrancar.
 
-### Paso 1 — Escribe tus 10 casos ANTES de correr nada
+---
 
-Dentro de Claude Code, pídele al agente que te ayude a construir tu suite de evals para la decisión de IA de tu proyecto. El reparto no es negociable:
+### Paso 1 — Escribe tus 10 casos ANTES de correr nada 📍 EN CLAUDE CODE
+
+El camino fácil: copia la plantilla a tu proyecto y llénala con ayuda del agente. Dentro de Claude Code, pégale esto (ajusta el nombre de tu proyecto):
+
+```
+Copia proyectos/PLANTILLA-evals.md a proyectos/<tu-proyecto>/evals.md y ayúdame
+a llenarla. La decisión que quiero evaluar es la más difícil de mi decisiones.md.
+Hazme preguntas sobre mi operación para construir los casos — no los inventes tú.
+```
+
+El reparto de los 10 casos no es negociable:
 
 | Cuántos | Tipo | Qué son |
 |---|---|---|
 | 5 | Típicos | El caso normal de todos los días |
-| 3 | Límite | Raros pero reales, sacados de TU operación |
+| 3 | Límite | Raros pero reales, sacados de TU operación (el redondeo, el caso fronterizo) |
 | 2 | Adversariales | Diseñados para romperla: input vacío, datos que faltan, un intento de manipulación |
-
-Por cada caso escribes el **input** y la **salida esperada** — la verdad, fijada por ti, verificable sin preguntarle al modelo. Esto queda en `proyectos/<tu-proyecto>/evals.md`.
 
 > Si los 10 casos fueran del camino feliz, el número mentiría hacia arriba. Los casos límite y adversariales son los que te dicen la verdad.
 
-### Paso 2 — Corre la línea base
+Tú pones los casos reales y decides la salida esperada de cada uno. El agente arma la tabla. **No dejes que el agente invente los casos: un número construido con casos inventados es ficción.**
+
+### Paso 2 — Corre la línea base 📍 EN CLAUDE CODE
+
+Escribe exactamente esto:
 
 ```
 /eval
 ```
 
-El agente corre tus 10 casos contra tu prompt actual, compara cada salida contra la verdad que TÚ escribiste, y te da la tasa: `6/10`, `7/10`, lo que sea. **Ese número feo es tu línea base.** No lo maquilles — conéctalo con un commit:
+El agente toma tus 10 casos, los corre contra tu prompt actual, compara cada salida contra la verdad que TÚ escribiste, y te da la tasa: `6/10`, `7/10`, lo que salga. **Ese número feo es tu línea base — tu punto de partida medido.** No lo maquilles.
+
+Guárdalo con un commit 📍 EN LA TERMINAL (o pídele al agente que lo haga):
 
 ```bash
 git add proyectos/
@@ -217,21 +282,28 @@ git commit -m "eval: corrida v0 - 6/10"
 git push
 ```
 
-### Paso 3 — Diagnostica y agrega SOLO el contexto que los fallos pidieron
+### Paso 3 — Diagnostica y agrega SOLO el contexto que los fallos pidieron 📍 EN CLAUDE CODE
 
-Por cada ❌, el agente te dice en qué nivel de la escalera cae: **regla ambigua → falta un dato → era un `if` → el modelo**. Casi nunca es el modelo.
+Por cada caso que falló (❌), el agente te dice en qué nivel de la escalera cae, en este orden:
 
-La disciplina: agrega únicamente el contexto que un eval reprobado pidió (una tolerancia, una lista de alias, un catálogo). Nada especulativo. Versiona tu prompt (v0 → v1) en `prompts.md` — no sobrescribas el anterior.
+| Nivel | Pregunta | Ejemplo de arreglo |
+|---|---|---|
+| 1 | ¿La regla está escrita ambigua? | Reescribir "si coincide" → "si la diferencia es menor a $0.50" |
+| 2 | ¿Le falta un dato? | Una lista de alias de proveedores, un catálogo, una tolerancia |
+| 3 | ¿Era un `if` disfrazado? | Sacarlo del prompt: eso se resuelve con código, no con IA |
+| 4 | ¿Es el modelo? | **Casi nunca es el modelo.** Es el último escalón, no el primero |
 
-### Paso 4 — Vuelve a correr y compara
+La disciplina: agrega únicamente el contexto que un eval reprobado pidió. Nada especulativo, ni un documento más. El agente actualiza tu `prompts.md` con la versión nueva (v1) **sin borrar la v0**.
+
+### Paso 4 — Vuelve a correr y compara 📍 EN CLAUDE CODE
 
 ```
 /eval
 ```
 
-Cada versión del prompt deja su propia columna en `evals.md`. El diff entre v0 y v1 — un número que sube con un motivo escrito al lado — es tu evidencia de que el sistema mejoró. Commit y push otra vez.
+Cada versión del prompt deja su propia columna en tu `evals.md`. Ver el número subir de v0 a v1 — con el porqué escrito al lado — es tu evidencia de que el sistema mejoró. Commit y push otra vez.
 
-**Regla permanente desde hoy: cada vez que toques un prompt, corre `/eval`.** Los prompts regresionan igual que el código, pero fallan más callados.
+**Regla permanente desde hoy: cada vez que toques un prompt, corre `/eval`.** Arreglas un caso y sin querer rompes otros tres; sin la suite, te enteras en producción. Los prompts se rompen igual que el código, pero fallan más callados.
 
 ---
 
