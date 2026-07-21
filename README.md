@@ -264,6 +264,8 @@ El reparto de los 10 casos no es negociable:
 
 Tú pones los casos reales y decides la salida esperada de cada uno. El agente arma la tabla. **No dejes que el agente invente los casos: un número construido con casos inventados es ficción.**
 
+**¿Se te dificulta escribir los casos?** Es normal — es la parte más difícil de la sesión. Lee [`proyectos/GUIA-escribir-evals.md`](proyectos/GUIA-escribir-evals.md): tiene recetas por tipo de decisión (clasificar, extraer, decidir, redactar) con tablas completas para calcar, el truco de "no escribas casos, recuerda casos", y un prompt para llenar la tabla con el agente de uno en uno. Si vas contra reloj: 6 casos reales (4 típicos, 1 límite, 1 adversarial) bastan para una primera medición honesta.
+
 ### Paso 2 — Corre la línea base 📍 EN CLAUDE CODE
 
 Escribe exactamente esto:
