@@ -164,7 +164,13 @@ El agente te va a conducir paso a paso: elegir un proceso, mapearlo, clasificar 
 
 En la Sesión 1 diseñaste tu sistema y quedaron una o dos decisiones en manos de la IA. La Sesión 2 responde una sola pregunta: **¿cuánto acierta esa decisión?** No "se ve bien". Un número.
 
-### Primero: ¿qué es un eval?
+Esta sección tiene dos partes. **Parte A** son los conceptos — léela con calma, idealmente antes del taller. **Parte B** es el taller paso a paso — ahí vas a copiar y pegar. No las mezcles: primero entiende, luego ejecuta.
+
+---
+
+## Parte A — Los conceptos (léelos antes de tocar nada)
+
+### ¿Qué es un eval?
 
 Un eval es **un caso de prueba con dos cosas. Nada más:**
 
@@ -185,7 +191,7 @@ No es una herramienta cara ni un framework. Con diez de estos tienes con qué me
 
 Si para saber si acertó tendrías que opinar, el caso está mal escrito.
 
-### ¿Y qué es "el prompt" que vamos a medir?
+### ¿Qué es "el prompt" que vamos a medir?
 
 Es la instrucción que tu sistema le da a Claude para tomar SU decisión — la que quedó como IA en tu `flujo.md` de la Sesión 1. Vive en un archivo de tu proyecto: `proyectos/<tu-proyecto>/prompts.md`. Si aún no lo tienes, el agente te ayuda a crearlo en el **Paso 2**, justo antes de correr `/eval` — lo traduce desde tu diseño de la Sesión 1 (`decisiones.md` y `reglas.md`).
 
@@ -201,6 +207,30 @@ Vas a alternar entre dos lugares que se ven parecidos pero no son lo mismo:
 | **Claude Code** | Conversación con el agente (entraste con `claude`) | Hablar con el agente y correr `/eval`, `/arrancar`, etc. |
 
 Para salir de Claude Code y volver a la terminal: `Ctrl+C` (o escribe `/exit`). Para volver a entrar: `claude`.
+
+### ¿Por qué los casos van ANTES que el prompt?
+
+Pregunta justa — parecería natural escribir primero el prompt y luego probarlo. El orden es al revés a propósito:
+
+> **La verdad se fija antes de medir.** Si escribes el prompt primero, vas a escribir — sin darte cuenta — casos que tu prompt ya resuelve, y el número saldrá bonito y mentiroso. Si fijas los 10 casos primero (con sus salidas esperadas), el prompt se enfrenta a una realidad que no puede acomodar. Es la misma razón por la que un examen se escribe antes de ver las respuestas del alumno.
+
+Además, tu prompt v0 no nace de la nada: se traduce desde tu `decisiones.md` y `reglas.md` de la Sesión 1. El diseño ya existe; el prompt solo lo pone en palabras. Por eso escribirlo toma 2 minutos en el Paso 2, mientras que los casos — que sí requieren TU conocimiento de la operación — se llevan el Paso 1 completo.
+
+---
+
+## Parte B — El taller, paso a paso
+
+La ruta completa, para que sepas siempre dónde estás:
+
+| Paso | Qué haces | Dónde | Qué queda en disco |
+|---|---|---|---|
+| **0** | Actualiza tu repo (trae `/eval` y la plantilla) | 📍 Terminal | `.claude/commands/eval.md`, `proyectos/PLANTILLA-evals.md` |
+| **1** | Escribe tus 10 casos (la verdad, primero) | 📍 Claude Code | `evals.md` con inputs y salidas esperadas |
+| **2** | Escribe tu prompt v0 y corre la línea base | 📍 Claude Code | `prompts.md` (v0) + tu primer número |
+| **3** | Diagnostica los fallos, agrega SOLO el contexto pedido | 📍 Claude Code | `prompts.md` (v1, sin borrar v0) |
+| **4** | Vuelve a correr y compara v0 vs v1 | 📍 Claude Code | `evals.md` con una columna por versión |
+
+Cada paso cierra con un commit. Al final del taller, tu `git log` cuenta la historia completa: la verdad → el número feo → el porqué → el número mejor.
 
 ---
 
@@ -244,6 +274,8 @@ git push
 
 ### Paso 1 — Escribe tus 10 casos ANTES de correr nada 📍 EN CLAUDE CODE
 
+> Primero la verdad, luego el prompt. Si te saltaste el porqué, está en la Parte A.
+
 El camino fácil: copia la plantilla a tu proyecto y llénala con ayuda del agente. Dentro de Claude Code, pégale esto (ajusta el nombre de tu proyecto):
 
 ```
@@ -265,6 +297,8 @@ El reparto de los 10 casos no es negociable:
 Tú pones los casos reales y decides la salida esperada de cada uno. El agente arma la tabla. **No dejes que el agente invente los casos: un número construido con casos inventados es ficción.**
 
 **¿Se te dificulta escribir los casos?** Es normal — es la parte más difícil de la sesión. Lee [`proyectos/GUIA-escribir-evals.md`](proyectos/GUIA-escribir-evals.md): tiene recetas por tipo de decisión (clasificar, extraer, decidir, redactar) con tablas completas para calcar, el truco de "no escribas casos, recuerda casos", y un prompt para llenar la tabla con el agente de uno en uno. Si vas contra reloj: 6 casos reales (4 típicos, 1 límite, 1 adversarial) bastan para una primera medición honesta.
+
+---
 
 ### Paso 2 — Escribe tu prompt v0 y corre la línea base 📍 EN CLAUDE CODE
 
@@ -292,6 +326,8 @@ git commit -m "eval: corrida v0 - 6/10"
 git push
 ```
 
+---
+
 ### Paso 3 — Diagnostica y agrega SOLO el contexto que los fallos pidieron 📍 EN CLAUDE CODE
 
 Por cada caso que falló (❌), el agente te dice en qué nivel de la escalera cae, en este orden:
@@ -304,6 +340,8 @@ Por cada caso que falló (❌), el agente te dice en qué nivel de la escalera c
 | 4 | ¿Es el modelo? | **Casi nunca es el modelo.** Es el último escalón, no el primero |
 
 La disciplina: agrega únicamente el contexto que un eval reprobado pidió. Nada especulativo, ni un documento más. El agente actualiza tu `prompts.md` con la versión nueva (v1) **sin borrar la v0**.
+
+---
 
 ### Paso 4 — Vuelve a correr y compara 📍 EN CLAUDE CODE
 
