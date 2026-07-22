@@ -14,7 +14,7 @@ Tu objetivo: correr los casos de `evals.md` contra el prompt actual y devolver *
 - **Falta `decisiones.md`:** reconstrúyelo desde `reglas.md` y `flujo.md`, clasificando cada paso como if / IA / humano, y confirma con el humano cuál es la decisión de IA a evaluar.
 - **Faltan los casos (tabla vacía o incompleta):** NO los inventes tú, pero tampoco pidas los 10 de golpe — eso paraliza. Guía de uno en uno con la receta de `proyectos/GUIA-escribir-evals.md`: propone TÚ un borrador de input realista basado en el proyecto, y que el humano lo corrija y fije la salida esperada. El borrador del input puede ser tuyo; **la salida esperada es siempre del humano.** Con 6 casos fijados (4 típicos, 1 límite, 1 adversarial) ya puedes correr una primera medición honesta — dilo y ofrece correr con lo que hay, marcando la suite como incompleta.
 
-**1. Ubica el proyecto.** Busca en `proyectos/`. Si hay varios, pregunta cuál. Lee su `evals.md` y su `prompts.md` — usa la versión más reciente del prompt (si hay v1, corre v1; si solo hay v0, corre v0).
+**1. Ubica el proyecto.** Busca en `proyectos/`. Si hay varios, pregunta cuál. Lee su `evals.md` y su `prompts.md` — usa la versión más reciente del prompt (si hay v1, corre v1; si solo hay v0, corre v0). Si el proyecto no tiene `prompts.md`, dilo y ofrece escribir un v0 mínimo desde `decisiones.md`/`reglas.md` antes de correr (paso 0). **Nunca corras contra un prompt vacío o inexistente** — una tasa medida contra nada es un número inventado.
 
 **2. Corre cada caso.** Pasa cada `input` de `evals.md` por el prompt actual, tal como lo haría el sistema en producción. Saca la salida real.
 

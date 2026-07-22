@@ -187,7 +187,7 @@ Si para saber si acertó tendrías que opinar, el caso está mal escrito.
 
 ### ¿Y qué es "el prompt" que vamos a medir?
 
-Es la instrucción que tu sistema le da a Claude para tomar SU decisión — la que quedó como IA en tu `flujo.md` de la Sesión 1. Vive en un archivo de tu proyecto: `proyectos/<tu-proyecto>/prompts.md`. Si aún no lo tienes, el agente te ayuda a crearlo en el Paso 1.
+Es la instrucción que tu sistema le da a Claude para tomar SU decisión — la que quedó como IA en tu `flujo.md` de la Sesión 1. Vive en un archivo de tu proyecto: `proyectos/<tu-proyecto>/prompts.md`. Si aún no lo tienes, el agente te ayuda a crearlo en el **Paso 2**, justo antes de correr `/eval` — lo traduce desde tu diseño de la Sesión 1 (`decisiones.md` y `reglas.md`).
 
 Cada vez que lo cambies, la versión anterior se queda escrita (v0, v1, v2…). Nunca borres una versión: comparar los números entre versiones es justamente el punto.
 
@@ -266,15 +266,23 @@ Tú pones los casos reales y decides la salida esperada de cada uno. El agente a
 
 **¿Se te dificulta escribir los casos?** Es normal — es la parte más difícil de la sesión. Lee [`proyectos/GUIA-escribir-evals.md`](proyectos/GUIA-escribir-evals.md): tiene recetas por tipo de decisión (clasificar, extraer, decidir, redactar) con tablas completas para calcar, el truco de "no escribas casos, recuerda casos", y un prompt para llenar la tabla con el agente de uno en uno. Si vas contra reloj: 6 casos reales (4 típicos, 1 límite, 1 adversarial) bastan para una primera medición honesta.
 
-### Paso 2 — Corre la línea base 📍 EN CLAUDE CODE
+### Paso 2 — Escribe tu prompt v0 y corre la línea base 📍 EN CLAUDE CODE
 
-Escribe exactamente esto:
+Primero necesitas el prompt que vas a medir. Si aún no tienes `prompts.md`, pídeselo al agente — que lo arme desde tu diseño de la Sesión 1, **mínimo, sin adornos**:
+
+```
+Escribe la versión v0 del prompt para la decisión que estoy evaluando, usando mi
+decisiones.md y mi reglas.md. Que sea mínima: solo la instrucción y las reglas,
+sin contexto de negocio ni ejemplos. Guárdala en proyectos/<tu-proyecto>/prompts.md como v0.
+```
+
+Pelón a propósito: quieres medir el punto de partida más crudo, para que la mejora del contexto se note después. Con el v0 en su lugar, mídelo:
 
 ```
 /eval
 ```
 
-El agente toma tus 10 casos, los corre contra tu prompt actual, compara cada salida contra la verdad que TÚ escribiste, y te da la tasa: `6/10`, `7/10`, lo que salga. **Ese número feo es tu línea base — tu punto de partida medido.** No lo maquilles.
+El agente toma tus 10 casos, los corre contra tu prompt v0, compara cada salida contra la verdad que TÚ escribiste, y te da la tasa: `6/10`, `7/10`, lo que salga. **Ese número feo es tu línea base — tu punto de partida medido.** No lo maquilles.
 
 Guárdalo con un commit 📍 EN LA TERMINAL (o pídele al agente que lo haga):
 
