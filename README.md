@@ -355,6 +355,94 @@ Cada versión del prompt deja su propia columna en tu `evals.md`. Ver el número
 
 ---
 
+## Sesión 3 — Loops: el sistema que corre solo y para solo
+
+En la Sesión 1 diseñaste el sistema. En la Sesión 2 mediste su decisión de IA. La Sesión 3 cierra el núcleo: **convertir el paso donde HOY el humano es el bucle** — revisar, corregir, volver a revisar — en un loop que trabaja, se verifica y se detiene sin que nadie lo esté viendo.
+
+La idea central viene de la doctrina (`CLAUDE.md` §11): un loop sin condición de parada verificable no es automatización — es una fuga de presupuesto con un optimista adentro. Todo loop necesita **cuatro paradas**:
+
+| # | Parada | La pregunta que responde |
+|---|---|---|
+| 1 | **Éxito** | ¿Cómo sabe que terminó BIEN — sin preguntarle al modelo? |
+| 2 | **Presupuesto** | ¿Cuántas vueltas / cuánto dinero antes de rendirse? |
+| 3 | **No-progreso** | ¿Cómo detecta que da vueltas sin avanzar? |
+| 4 | **Escalamiento** | ¿Qué casos van a un humano ANTES de agotar presupuesto? |
+
+Falta una y el loop es un riesgo (§11). Las cuatro con números concretos, o el loop no se escribe.
+
+---
+
+### Paso 0 — Trae `/loop` y su plantilla a TU repo 📍 EN LA TERMINAL
+
+Igual que en la Sesión 2: tu repo es una foto del día que lo creaste, y `/loop` se publicó después. Parado en tu repo (`pwd` para ubicarte, `cd` a tu carpeta), verifica:
+
+```bash
+ls .claude/commands/
+```
+
+Si aparece `loop.md`, salta al Paso 1. Si NO, copia y pega estas dos líneas (cada una completa):
+
+```bash
+curl -o .claude/commands/loop.md https://raw.githubusercontent.com/nabolom/ai-automation-expert/main/.claude/commands/loop.md
+curl -o proyectos/PLANTILLA-loop.md https://raw.githubusercontent.com/nabolom/ai-automation-expert/main/proyectos/PLANTILLA-loop.md
+```
+
+Confirma y guarda en tu repo:
+
+```bash
+ls .claude/commands/          # debe aparecer loop.md
+ls proyectos/                 # debe aparecer PLANTILLA-loop.md
+
+git add .claude/commands/loop.md proyectos/PLANTILLA-loop.md
+git commit -m "sesion 3: comando /loop y plantilla de loops"
+git push
+```
+
+**Importante:** si Claude Code estaba abierto, ciérralo (`Ctrl+C`) y vuelve a entrar (`claude`) — los comandos nuevos solo se detectan al arrancar.
+
+---
+
+### Paso 1 — Corre `/loop` en tu proyecto 📍 EN CLAUDE CODE
+
+**Prerequisitos:** `/loop` lee tu `flujo.md`, tu `evals.md` y tu `alcance.md`. Si falta alguno, el comando se detiene y te lo dice — las Sesiones 1 y 2 son el suelo de esta. Si tu suite de evals quedó incompleta, ciérrala primero (la [guía de evals](proyectos/GUIA-escribir-evals.md) sigue ahí).
+
+```
+/loop
+```
+
+El comando trabaja en cinco fases, y te va a exigir números — no te aceptes a ti mismo respuestas cualitativas:
+
+| Fase | Qué pasa | Tu papel |
+|---|---|---|
+| 1 | Identifica EL paso candidato de tu `flujo.md` (uno solo) | Confirmar o corregir |
+| 2 | Te exige las cuatro paradas con valores concretos | Dar números: "máx 5 iteraciones o $8 MXN", no "las que necesite" |
+| 3 | Escribe la especificación en `proyectos/<tu-proyecto>/loop.md` | Revisar que verificación y trabajo sean pasos SEPARADOS |
+| 4 | Corre el loop UNA vez contra un caso real de tus evals | Mirar la traza que queda en `trazas/` |
+| 5 | Te pregunta: ¿salió por donde esperabas? | Aplicar UN ajuste y volver a correr |
+
+---
+
+### Paso 2 — Lee la traza como diagnóstico 📍 EN CLAUDE CODE
+
+La traza dice **por cuál de las cuatro paradas salió** el loop, y cada salida es un diagnóstico distinto:
+
+| Salió por… | Significa |
+|---|---|
+| Presupuesto | Tu condición de éxito probablemente es inalcanzable, no estricta |
+| No-progreso en la primera revisión | Tu verificación no está midiendo nada útil |
+| Éxito en la primera vuelta | No necesitabas un loop — necesitabas un prompt |
+| Escalamiento con un caso que SÍ estaba en alcance | Tu disparador está mal calibrado |
+
+Un ajuste a la vez — el que más mueva la aguja. Corre de nuevo. Y commit después de cada corrida, porque la traza es evidencia: es lo que hace que la Sesión 4 pueda comparar contra algo en vez de empezar de cero.
+
+```bash
+git add proyectos/
+git commit -m "loop: primera traza - salio por <parada>"
+git push
+```
+
+---
+
 ## Por qué este repo existe
 
 Un asistente de IA genérico ya sabe qué es un webhook. Lo que **no** tiene es criterio, hechos frescos y patrones probados. Y peor: **alucina precios, rate limits y nombres de nodos con total confianza.**
@@ -410,6 +498,7 @@ proyectos/         tus automatizaciones
 | `/auditar` | Revisión crítica. Te dice qué parte de tu sistema es teatro |
 | `/verificar` | Re-verifica las referencias contra fuente oficial |
 | `/eval` | Corre tus evals contra el prompt actual y te da la tasa de acierto |
+| `/loop` | Diseña y ejecuta un loop de trabajo-verificación con cuatro paradas explícitas |
 
 Fuera de los comandos, habla normal. Pregúntale, pídele código, discútele decisiones. Tiene el contexto.
 
