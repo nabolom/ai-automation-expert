@@ -402,7 +402,39 @@ git push
 
 ---
 
-### Paso 1 — Corre `/loop` en tu proyecto 📍 EN CLAUDE CODE
+### Paso 1 — Diagnostica antes de construir 📍 EN CLAUDE CODE
+
+Antes de escribir un loop, nombra la capa donde tu sistema falla hoy. Un loop mal ubicado automatiza el paso equivocado.
+
+Copia las dos plantillas a tu proyecto:
+
+```
+cp proyectos/PLANTILLA-diagnostico.md proyectos/<tu-proyecto>/diagnostico.md
+cp proyectos/PLANTILLA-harness.md proyectos/<tu-proyecto>/harness.md
+```
+
+Si no las tienes todavía, tráelas igual que `/loop`:
+
+```
+curl -o proyectos/PLANTILLA-diagnostico.md https://raw.githubusercontent.com/nabolom/ai-automation-expert/main/proyectos/PLANTILLA-diagnostico.md
+curl -o proyectos/PLANTILLA-harness.md https://raw.githubusercontent.com/nabolom/ai-automation-expert/main/proyectos/PLANTILLA-harness.md
+```
+
+**`diagnostico.md`** — toma los casos que fallaron en tu `evals.md` y clasifícalos por capa. La columna que cuesta es *evidencia*: «se siente como el modelo» no es evidencia; «le di el dato explícito y aun así falló» sí lo es. Nadie escribe «modelo» sin descartar las otras tres capas por escrito.
+
+**`harness.md`** — inventario de las cuatro capas de tu sistema: qué existe, dónde vive, qué falta. Cada capa termina con al menos un hueco nombrado. Si no le falta nada a ninguna, tu sistema nunca ha corrido solo.
+
+Las cuatro capas se diagnostican **de abajo hacia arriba** — harness, framework, contexto, modelo — porque lo barato y probable se revisa primero. El marco completo está en `referencias/harness.md`.
+
+```
+git add proyectos/
+git commit -m "sesion 3: diagnostico por capas e inventario de harness"
+git push
+```
+
+---
+
+### Paso 2 — Corre `/loop` en tu proyecto 📍 EN CLAUDE CODE
 
 **Prerequisitos:** `/loop` lee tu `flujo.md`, tu `evals.md` y tu `alcance.md`. Si falta alguno, el comando se detiene y te lo dice — las Sesiones 1 y 2 son el suelo de esta. Si tu suite de evals quedó incompleta, ciérrala primero (la [guía de evals](proyectos/GUIA-escribir-evals.md) sigue ahí).
 
@@ -422,7 +454,7 @@ El comando trabaja en cinco fases, y te va a exigir números — no te aceptes a
 
 ---
 
-### Paso 2 — Lee la traza como diagnóstico 📍 EN CLAUDE CODE
+### Paso 3 — Lee la traza como diagnóstico 📍 EN CLAUDE CODE
 
 La traza dice **por cuál de las cuatro paradas salió** el loop, y cada salida es un diagnóstico distinto:
 
