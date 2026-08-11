@@ -632,22 +632,15 @@ Al final de la noche tu `git log` cuenta la historia de la robustez: la auditor�
 
 ## Sesión 5 · Multiagente a juicio — "Pruébame que merecías existir"
 
-Última sesión. La pregunta de la S1 ("¿qué vale la pena automatizar y cómo sabré que funcionó?") vuelve aplicada a la arquitectura: **¿este multiagente valió su sobrecosto, de verdad?** No admiramos multiagente; lo ponemos a juicio contra un solo agente al mismo presupuesto de tokens, y dejamos que la traza dicte el veredicto.
+Última sesión. La pregunta vuelve a la arquitectura: **¿tu nest de subagentes produjo suficiente calidad o velocidad para justificar los tokens que consumió?** No admiramos multiagente; lo comparamos con un solo agente, bajo la misma tarea y configuración, y dejamos que los datos dicten el veredicto.
 
-**Pasos:**
+**El ejercicio completo vive en [`EJERCICIO-S5.md`](EJERCICIO-S5.md).** Ahí encontrarás el prework, el baseline técnicamente bloqueado contra subagentes, las dos corridas, las métricas, las tarjetas de veredicto y el plan B para clase.
 
-1. **Prework.** Lee el debate fundacional —Anthropic *"How we built our multi-agent research system"* (a favor) y Cognition *"Don't Build Multi-Agents"* (en contra)— con una pregunta: ¿tu tarea es paralela/independiente o secuencial/dependiente? Setup único del template `nest-a-juicio` (clona-y-corre + LangSmith). Trae tu baseline de un solo agente y tu tarea candidata. Detalle en `referencias/multiagente.md`.
-2. **Audita tu apuesta (Paso 0).** Aplica la prueba de forma a tu tarea candidata. Si es secuencial, ya intuyes el veredicto; igual lo pruebas con datos.
-3. **Corre el nest.** Lanza tu tarea en el multiagente jerárquico; deja que LangSmith capture la traza.
-4. **Lee la traza.** En LangSmith/LangGraph: tokens por agente, costo total, latencia, trabajo redundante, agentes esperando en fila.
-5. **Corre el baseline.** El mismo problema con un solo agente, **mismas herramientas y mismo presupuesto de tokens**.
-6. **Emite el veredicto.** ¿El nest ganó lo suficiente para justificar los N× tokens? Escribe el número y adjunta las dos trazas. Un multiagente que pierde contra el baseline es un hallazgo válido —y el más valioso.
+**Qué juzgas:** tokens, costo estimado, duración y calidad bajo una rúbrica común. La atribución de `/usage` indica cuánto trabajo se ejecutó fuera del hilo líder; no equivale solo a coordinación.
 
-**Recuerda la aritmética:** 5 agentes al 95% de confiabilidad individual dan 77% de sistema. Cada subagente que agregas es otro eslabón en tu `0.95^n`.
+**Entregable:** dos tarjetas de veredicto (Tarea A y Tarea B) y una línea sobre la brecha entre tu predicción y los datos.
 
-**Doctrina aplicable** (por nombre, no por número): *workflow vs agente*, *elige el que duele*, *medir en vez de opinar*.
-
-**Entregable:** la traza de tu nest + tu veredicto costo-beneficio contra el baseline.
+**Lectura de apoyo:** [`referencias/multiagente.md`](referencias/multiagente.md).
 
 ## Por qué este repo existe
 
