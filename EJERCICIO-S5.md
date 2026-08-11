@@ -82,21 +82,29 @@ Agent Teams es experimental. Si en 90 segundos no aparecen teammates, escribe `/
 
 ---
 
-## 6. Entrega tu decisión arquitectónica
+## 6. Deja que Claude te ayude a decidir la arquitectura
 
-En la Terminal, copia la tarjeta:
+Abre Claude Code dentro del repo:
 
 ```bash
-cp tarjetas/DECISION-ARQUITECTURA.md resultados/decision-arquitectonica.md
+claude
 ```
 
-Completa la tarjeta con evidencia de tu Nest y, cuando Agent Teams haya funcionado, de tu Swarm. Si no apareció, usa la demo o el Plan B del facilitador. Tu conclusión puede ser **un solo agente**, **Nest** o **Swarm**.
+Luego escribe:
+
+```text
+/decidir-arquitectura
+```
+
+Claude te entrevista sobre lo que viste en Nest y Swarm, pide ejemplos concretos y te pregunta qué comunicación necesitaba realmente el caso. No guarda nada hasta que confirmes tu decisión.
+
+Después de confirmar, crea `resultados/decision-arquitectonica.md`. La decisión puede ser **un solo agente**, **Nest**, **Swarm** o **evidencia insuficiente**.
 
 > Si eliges Nest, no es una respuesta menor: significa que evitaste complejidad innecesaria.
 
 ## 7. Crea una entrega descargable
 
-Una vez que tengas la conclusión del Nest y tu tarjeta, abre Claude Code dentro del repo:
+Una vez que tengas la conclusión del Nest y la decisión arquitectónica, abre Claude Code dentro del repo:
 
 ```bash
 claude
@@ -110,7 +118,11 @@ Luego escribe:
 
 Se creará `resultados/entrega-s5.md`, un archivo único con la conclusión del caso, tu decisión de arquitectura y la evidencia disponible. Adjunta ese archivo desde la carpeta `resultados` en Finder, Explorador de archivos o la plataforma donde entregarás tu trabajo.
 
-Para el recorrido completo, los diagramas, el caso, la tarjeta y la guía de facilitación, consulta el [README de `nest-a-juicio`](https://github.com/nabolom/nest-a-juicio).
+## 8. Configura tu propio sistema
+
+Después del caso guiado, crea una copia privada de la [plantilla para configurar Nest o Swarm](https://github.com/nabolom/plantilla-nest-swarm). Ese repo entrevista tu propio proceso y genera el esqueleto del patrón que justifiques.
+
+Para el recorrido completo, los diagramas, el caso, la decisión guiada y la guía de facilitación, consulta el [README de `nest-a-juicio`](https://github.com/nabolom/nest-a-juicio).
 
 ## Referencias
 
