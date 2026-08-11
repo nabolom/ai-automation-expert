@@ -18,7 +18,7 @@ Este ejercicio no celebra una arquitectura por verse sofisticada. Corre la **mis
 
 ## Antes de empezar — requisitos del prework
 
-El ejercicio requiere el repositorio complementario **`nest-a-juicio`**, que el facilitador compartirá antes del prework. Debe traer las Tareas A y B, seis fuentes fijas por tarea, las definiciones `.claude/agents/fuente-1.md` a `fuente-6.md`, las rúbricas, las tarjetas y las capturas de referencia en `trazas/`.
+El ejercicio requiere el repositorio complementario público [`nabolom/nest-a-juicio`](https://github.com/nabolom/nest-a-juicio). Incluye las Tareas A y B, seis fuentes fijas por tarea, las definiciones `.claude/agents/fuente-1.md` a `fuente-6.md`, las rúbricas, las tarjetas y las plantillas de captura en `trazas/`.
 
 > No sustituyas las fuentes del ejercicio por búsquedas web en vivo. Si las fuentes cambian entre baseline y nest, cambias más de una variable y la comparación deja de ser justa.
 
@@ -34,10 +34,10 @@ Usa una versión reciente de Claude Code. Para este ejercicio, necesitas que `/u
 
 ### 2. Clona el proyecto de ejercicio
 
-Cuando el facilitador comparta la URL, ejecuta:
+Ejecuta:
 
 ```bash
-git clone <URL-QUE-COMPARTA-EL-FACILITADOR>/nest-a-juicio.git
+git clone https://github.com/nabolom/nest-a-juicio.git
 cd nest-a-juicio
 ```
 
