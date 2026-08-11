@@ -630,6 +630,25 @@ Al final de la noche tu `git log` cuenta la historia de la robustez: la auditor�
 
 ---
 
+## Sesión 5 · Multiagente a juicio — "Pruébame que merecías existir"
+
+Última sesión. La pregunta de la S1 ("¿qué vale la pena automatizar y cómo sabré que funcionó?") vuelve aplicada a la arquitectura: **¿este multiagente valió su sobrecosto, de verdad?** No admiramos multiagente; lo ponemos a juicio contra un solo agente al mismo presupuesto de tokens, y dejamos que la traza dicte el veredicto.
+
+**Pasos:**
+
+1. **Prework.** Lee el debate fundacional —Anthropic *"How we built our multi-agent research system"* (a favor) y Cognition *"Don't Build Multi-Agents"* (en contra)— con una pregunta: ¿tu tarea es paralela/independiente o secuencial/dependiente? Setup único del template `nest-a-juicio` (clona-y-corre + LangSmith). Trae tu baseline de un solo agente y tu tarea candidata. Detalle en `referencias/multiagente.md`.
+2. **Audita tu apuesta (Paso 0).** Aplica la prueba de forma a tu tarea candidata. Si es secuencial, ya intuyes el veredicto; igual lo pruebas con datos.
+3. **Corre el nest.** Lanza tu tarea en el multiagente jerárquico; deja que LangSmith capture la traza.
+4. **Lee la traza.** En LangSmith/LangGraph: tokens por agente, costo total, latencia, trabajo redundante, agentes esperando en fila.
+5. **Corre el baseline.** El mismo problema con un solo agente, **mismas herramientas y mismo presupuesto de tokens**.
+6. **Emite el veredicto.** ¿El nest ganó lo suficiente para justificar los N× tokens? Escribe el número y adjunta las dos trazas. Un multiagente que pierde contra el baseline es un hallazgo válido —y el más valioso.
+
+**Recuerda la aritmética:** 5 agentes al 95% de confiabilidad individual dan 77% de sistema. Cada subagente que agregas es otro eslabón en tu `0.95^n`.
+
+**Doctrina aplicable** (por nombre, no por número): *workflow vs agente*, *elige el que duele*, *medir en vez de opinar*.
+
+**Entregable:** la traza de tu nest + tu veredicto costo-beneficio contra el baseline.
+
 ## Por qué este repo existe
 
 Un asistente de IA genérico ya sabe qué es un webhook. Lo que **no** tiene es criterio, hechos frescos y patrones probados. Y peor: **alucina precios, rate limits y nombres de nodos con total confianza.**
@@ -720,23 +739,4 @@ Al armar este repo, tres de los blogs mejor rankeados de "Claude API pricing 202
 Nunca subas credenciales. `.gitignore` ya bloquea `.env`.
 
 Si tu proceso toca datos sensibles de tu empresa, lee `skills/seguridad-datos/SKILL.md` antes de conectar nada.
-
-## Sesión 5 · Multiagente a juicio — "Pruébame que merecías existir"
-
-Última sesión. La pregunta de la S1 ("¿qué vale la pena automatizar y cómo sabré que funcionó?") vuelve aplicada a la arquitectura: **¿este multiagente valió su sobrecosto, de verdad?** No admiramos multiagente; lo ponemos a juicio contra un solo agente al mismo presupuesto de tokens, y dejamos que la traza dicte el veredicto.
-
-**Pasos:**
-
-1. **Prework.** Lee el debate fundacional —Anthropic *"How we built our multi-agent research system"* (a favor) y Cognition *"Don't Build Multi-Agents"* (en contra)— con una pregunta: ¿tu tarea es paralela/independiente o secuencial/dependiente? Setup único del template `nest-a-juicio` (clona-y-corre + LangSmith). Trae tu baseline de un solo agente y tu tarea candidata. Detalle en `referencias/multiagente.md`.
-2. **Audita tu apuesta (Paso 0).** Aplica la prueba de forma a tu tarea candidata. Si es secuencial, ya intuyes el veredicto; igual lo pruebas con datos.
-3. **Corre el nest.** Lanza tu tarea en el multiagente jerárquico; deja que LangSmith capture la traza.
-4. **Lee la traza.** En LangSmith/LangGraph: tokens por agente, costo total, latencia, trabajo redundante, agentes esperando en fila.
-5. **Corre el baseline.** El mismo problema con un solo agente, **mismas herramientas y mismo presupuesto de tokens**.
-6. **Emite el veredicto.** ¿El nest ganó lo suficiente para justificar los N× tokens? Escribe el número y adjunta las dos trazas. Un multiagente que pierde contra el baseline es un hallazgo válido —y el más valioso.
-
-**Recuerda la aritmética:** 5 agentes al 95% de confiabilidad individual dan 77% de sistema. Cada subagente que agregas es otro eslabón en tu `0.95^n`.
-
-**Doctrina aplicable** (por nombre, no por número): *workflow vs agente*, *elige el que duele*, *medir en vez de opinar*.
-
-**Entregable:** la traza de tu nest + tu veredicto costo-beneficio contra el baseline.
 
