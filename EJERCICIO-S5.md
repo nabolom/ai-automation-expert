@@ -54,10 +54,11 @@ Verás cuatro delegaciones: Producto, Ventas, Riesgo y Operaciones. El líder re
 La corrida es válida cuando aparece:
 
 ```text
+ARCHIVO GUARDADO: resultados/conclusion-nest.md
 NEST COMPLETADO: 4/4 reportes recibidos.
 ```
 
-Guarda una captura del transcript y escribe `/exit`. No necesitas usar `/usage` ni calcular costos.
+El primer mensaje confirma que el Nest guardó la decisión de negocio, la evidencia, las tensiones y el plan de 72 horas en `resultados/conclusion-nest.md`. Guarda una captura del transcript y escribe `/exit`. No necesitas usar `/usage` ni calcular costos.
 
 ---
 
@@ -86,12 +87,28 @@ Agent Teams es experimental. Si en 90 segundos no aparecen teammates, escribe `/
 En la Terminal, copia la tarjeta:
 
 ```bash
-cp tarjetas/DECISION-ARQUITECTURA.md mi-decision-arquitectonica.md
+cp tarjetas/DECISION-ARQUITECTURA.md resultados/decision-arquitectonica.md
 ```
 
 Completa la tarjeta con evidencia de tu Nest y, cuando Agent Teams haya funcionado, de tu Swarm. Si no apareció, usa la demo o el Plan B del facilitador. Tu conclusión puede ser **un solo agente**, **Nest** o **Swarm**.
 
 > Si eliges Nest, no es una respuesta menor: significa que evitaste complejidad innecesaria.
+
+## 7. Crea una entrega descargable
+
+Una vez que tengas la conclusión del Nest y tu tarjeta, abre Claude Code dentro del repo:
+
+```bash
+claude
+```
+
+Luego escribe:
+
+```text
+/cerrar-s5
+```
+
+Se creará `resultados/entrega-s5.md`, un archivo único con la conclusión del caso, tu decisión de arquitectura y la evidencia disponible. Adjunta ese archivo desde la carpeta `resultados` en Finder, Explorador de archivos o la plataforma donde entregarás tu trabajo.
 
 Para el recorrido completo, los diagramas, el caso, la tarjeta y la guía de facilitación, consulta el [README de `nest-a-juicio`](https://github.com/nabolom/nest-a-juicio).
 
