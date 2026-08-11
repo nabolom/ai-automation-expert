@@ -61,11 +61,23 @@ Guarda una captura del transcript y escribe `/exit`. No necesitas usar `/usage` 
 
 ---
 
-## 5. Observa el Swarm — demo del facilitador
+## 5. Ejecuta el Swarm — alumnos y facilitador
 
-Tu facilitador demostrará el mismo caso con un Agent Team. Observa si la comunicación directa entre Riesgo, Ventas y Operaciones resuelve algo que un líder no podría resolver con cuatro reportes claros.
+Ahora ejecuta el mismo caso como un Agent Team:
 
-Agent Teams es experimental. Si no aparece, el facilitador usará el plan B del repositorio; no se simulan resultados.
+```bash
+bash scripts/correr-swarm.sh
+```
+
+El script activa Agent Teams y pide cuatro teammates, tareas compartidas y mensajes directos entre Riesgo, Ventas y Operaciones. Busca esas tres señales antes de mirar la respuesta final.
+
+La corrida cuenta como Swarm cuando aparece:
+
+```text
+SWARM COMPLETADO: equipo, tareas compartidas y mensajes entre pares observados.
+```
+
+Agent Teams es experimental. Si en 90 segundos no aparecen teammates, escribe `/exit`, no intentes depurarlo durante el taller y usa el Plan B del facilitador. El facilitador corre la misma ruta en pantalla y guía el contraste.
 
 ---
 
@@ -77,7 +89,7 @@ En la Terminal, copia la tarjeta:
 cp tarjetas/DECISION-ARQUITECTURA.md mi-decision-arquitectonica.md
 ```
 
-Completa la tarjeta con evidencia del Nest y de la demo Swarm. Tu conclusión puede ser **un solo agente**, **Nest** o **Swarm**.
+Completa la tarjeta con evidencia de tu Nest y, cuando Agent Teams haya funcionado, de tu Swarm. Si no apareció, usa la demo o el Plan B del facilitador. Tu conclusión puede ser **un solo agente**, **Nest** o **Swarm**.
 
 > Si eliges Nest, no es una respuesta menor: significa que evitaste complejidad innecesaria.
 
