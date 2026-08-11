@@ -1,51 +1,57 @@
-# Ejercicio final S5 — Multiagente a juicio
+# Ejercicio final S5 — Nest vs. Swarm
 
-> **No preguntamos “¿puedo usar subagentes?”. Preguntamos “¿qué tendría que ganar este diseño para merecer su costo y su complejidad?”.**
+> **El objetivo no es usar más agentes. Es elegir la menor arquitectura que permite que la información circule como el caso lo necesita.**
 
-Este ejercicio cierra el curso aplicando la misma disciplina de las sesiones anteriores a una decisión de arquitectura. Primero entiendes el caso. Después entiendes las dos arquitecturas. Solo entonces haces una predicción, ejecutas una comparación justa y emites un juicio.
+En la S5 no mediremos costo ni tokens. `/usage` muestra información de la sesión y también barras de uso del plan, lo que no es una comparación limpia para cada alumno. En cambio, vamos a observar **cómo se comunica el trabajo** y decidir si el caso necesita un líder que sintetice o agentes que se hablen entre sí.
 
 El repositorio ejecutable es [`nabolom/nest-a-juicio`](https://github.com/nabolom/nest-a-juicio).
 
 ---
 
-## 1. Antes de predecir: conoce la situación
+## 1. Primero entiende el caso
 
-No abras Claude Code todavía. El ejercicio tiene dos casos sintéticos:
+Horizonte quiere lanzar **Cobranza Pro** el 15 de octubre. Producto tiene el sistema listo, Ventas prometió acceso a 40 clientes, Riesgo prohíbe activar automáticamente a 12 clientes regulados y Operaciones solo puede hacer 15 inscripciones manuales en una semana.
 
-| Caso | La situación | La diferencia estructural |
+Antes de abrir Claude Code, la pregunta es:
+
+> ¿Basta con que cada área reporte su información a un líder, o Riesgo, Ventas y Operaciones necesitan hablarse directamente para negociar el plan?
+
+No hay una respuesta correcta todavía. Esa es la decisión que vas a investigar.
+
+---
+
+## 2. Después entiende los dos patrones
+
+| Patrón | Flujo | Cuándo tiene sentido |
 |---|---|---|
-| **A — Cobranza Pro** | Horizonte debe decidir si lanzar un módulo usando seis notas de áreas distintas. | Las seis fuentes son independientes: producto, ventas, soporte, finanzas, legal y operaciones pueden leerse por separado. |
-| **B — Factura con OC faltante** | Debes decidir qué hacer con una factura de $54,500 sin una OC verificable. | Las seis fuentes son una cadena de reglas: cada una modifica cómo entiendes la siguiente. |
+| **Nest** | Los especialistas reportan al líder. El líder sintetiza y decide. | Cuando las piezas pueden investigarse por separado y el líder puede recomponerlas. |
+| **Swarm** | Los agentes comparten tareas y pueden enviarse mensajes directos entre pares. | Cuando los especialistas necesitan cuestionar, negociar o coordinar entre sí. |
 
-Esto no prueba que A “deba” usar agentes ni que B “deba” evitarlos. Solo te da una razón estructural para evaluar ambas posibilidades.
+```text
+NEST                              SWARM
+producto ─────┐                   producto <──> ventas
+ventas ───────┼──> líder          riesgo   <──> operaciones
+riesgo ───────┤       │              \_______ líder _______/
+operaciones ──┘       └──> decisión
+```
 
----
-
-## 2. Entiende qué comparas
-
-| Arquitectura | Qué hace | La pregunta que responde |
-|---|---|---|
-| **Baseline: un solo agente** | Un agente lee las seis fuentes, razona y responde en el mismo contexto. | ¿Qué calidad, tiempo y consumo necesitas si no agregas coordinación? |
-| **Nest: líder + seis lectores** | `nest-coordinador` manda una fuente a cada `fuente-1`…`fuente-6`, recibe sus seis hallazgos y sintetiza. | ¿La distribución compra suficiente cobertura o velocidad para justificar su costo? |
-
-El corpus, las tareas, la rúbrica, el formato de salida y el modelo del líder se mantienen fijos. Solo cambia la posibilidad de delegar. Sin ese control, no podrías atribuir el resultado a la arquitectura.
+En Claude Code, el Swarm se implementa como un **Agent Team**, una función experimental que crea sesiones separadas con lista de tareas compartida y comunicación entre compañeros. [1]
 
 ---
 
-## 3. Ahora sí: declara tu hipótesis
+## 3. Ahora sí: escribe tu hipótesis
 
-Después de conocer casos y arquitecturas, escribe dos frases:
+Completa esta frase antes de ejecutar:
 
-1. **A:** “Dado que las fuentes son independientes, creo que el nest [sí/no] justificará su costo porque…”
-2. **B:** “Dado que las reglas forman una cadena, creo que el nest [sí/no] justificará su costo porque…”
+> “Para Cobranza Pro elegiría [Nest / Swarm] porque los especialistas [sí / no] necesitan comunicarse directamente para resolver las tensiones entre Ventas, Riesgo y Operaciones.”
 
-No hay una respuesta esperada. La predicción existe para que al final puedas comparar tu intuición con los datos.
+Tu meta no es acertar. Tu meta es tener una idea explícita que puedas confirmar o cambiar con evidencia.
 
 ---
 
-## 4. Ejecuta el experimento
+## 4. Todos ejecutan el Nest
 
-Clona el repo y corre el preflight:
+Clona y valida el ejercicio:
 
 ```bash
 git clone https://github.com/nabolom/nest-a-juicio.git
@@ -53,59 +59,52 @@ cd nest-a-juicio
 bash scripts/empezar.sh
 ```
 
-Si `empezar.sh` falla, resuelve el setup antes de continuar. Un problema de instalación no es evidencia sobre multiagente.
+Después corre exactamente este comando:
 
-Después, ejecuta cada par completo:
+```bash
+bash scripts/correr-nest.sh
+```
 
-| Orden | En la terminal ejecutas | Por qué | Corrida válida cuando… |
-|---|---|---|---|
-| A1 | `bash scripts/correr-baseline-a.sh` | Establece cuánto logra un agente único para seis fuentes independientes. | No aparecen delegaciones. |
-| A2 | `bash scripts/correr-nest-a.sh` | Prueba si los seis lectores mejoran cobertura o duración frente al baseline. | Hay seis delegaciones y `NEST COMPLETADO: 6/6 fuentes recibidas.` |
-| B1 | `bash scripts/correr-baseline-b.sh` | Establece qué logra un agente único con toda la cadena en su contexto. | No aparecen delegaciones. |
-| B2 | `bash scripts/correr-nest-b.sh` | Prueba si distribuir la cadena aporta valor o añade fricción. | Hay seis delegaciones y `NEST COMPLETADO: 6/6 fuentes recibidas.` |
+El coordinador abrirá cuatro especialistas: **Producto, Ventas, Riesgo y Operaciones**. Cada uno lee el caso y reporta al líder. El líder toma los cuatro reportes y construye una decisión de lanzamiento con un plan de 72 horas.
 
-El baseline bloquea técnicamente la herramienta `Agent`. El nest obliga al coordinador a usar los seis lectores. No copies prompts ni agregues instrucciones: los scripts ya cargan la condición experimental correcta. [1] [2]
+**Qué debes observar:** cuatro delegaciones y este cierre:
 
----
+```text
+NEST COMPLETADO: 4/4 reportes recibidos.
+```
 
-## 5. Convierte cada corrida en evidencia
-
-Después de cada respuesta, antes de escribir `/exit`:
-
-1. Escribe `/usage` y toma una captura.
-2. Detén el cronómetro.
-3. Aplica la rúbrica de 0–5 del caso correspondiente.
-4. Registra los resultados con `scripts/registrar-corrida.sh`.
-
-La evidencia responde cuatro preguntas:
-
-| Dato | Pregunta |
-|---|---|
-| Tokens y costo estimado | ¿Cuánto consumo adicional compró el nest? |
-| Duración | ¿El diseño distribuido ganó o perdió tiempo? |
-| Rúbrica | ¿La respuesta mejoró de forma verificable? |
-| % atribuido a subagentes | ¿Qué parte del uso ocurrió fuera del hilo líder? |
-
-El porcentaje de `/usage` es trabajo atribuido a subagentes, no únicamente coordinación. Es una medida relativa dentro de la misma configuración, no una factura. [3]
+Guarda una captura del transcript y escribe `/exit`. No necesitas usar `/usage`.
 
 ---
 
-## 6. El entregable: dos juicios
+## 5. El facilitador demuestra el Swarm
 
-Completa una tarjeta para A y otra para B. En cada una compara N× tokens, N× costo, Δ duración y Δ calidad.
+Tu facilitador correrá el mismo caso como un Agent Team. En la demostración, Riesgo, Ventas y Operaciones pueden comunicarse directamente y usar una lista de tareas compartida.
 
-| Veredicto | Qué significa |
-|---|---|
-| **Justifica** | La calidad o velocidad ganada compensa el costo adicional. |
-| **No justifica** | El nest gasta más y no compra beneficio suficiente. |
-| **Evidencia insuficiente** | Cambió una condición o faltan datos para decidir con honestidad. |
+Observa estas tres preguntas:
 
-Un nest que pierde no es un fallo: es la prueba de que evitaste pagar complejidad innecesaria en producción.
+1. ¿Qué información tuvo que ir directamente de un especialista a otro?
+2. ¿Ese intercambio cambió algo que un líder no habría podido resolver con cuatro reportes?
+3. ¿La lista de tareas compartida eliminó una confusión real o añadió complejidad?
 
-Para el paso a paso completo, los archivos de los agentes, las tareas, rúbricas, scripts y recuperación de errores, sigue el [README de `nest-a-juicio`](https://github.com/nabolom/nest-a-juicio).
+Agent Teams es experimental. Si no aparece, el facilitador usará el plan B del repo para explicar la diferencia sin simular resultados. [1]
+
+---
+
+## 6. Entrega una decisión arquitectónica
+
+Copia y llena esta tarjeta:
+
+```bash
+cp tarjetas/DECISION-ARQUITECTURA.md mi-decision-arquitectonica.md
+```
+
+Tu veredicto puede ser **un solo agente**, **Nest** o **Swarm**. Debes defenderlo con evidencia del caso, del transcript del Nest y de la demo.
+
+> Si decides que el Nest basta, no perdiste: evitaste complejidad que este caso no necesitaba.
+
+Para el paso a paso completo y la guía de facilitación: [README de `nest-a-juicio`](https://github.com/nabolom/nest-a-juicio).
 
 ## Referencias
 
-[1]: https://code.claude.com/docs/en/cli-reference "Claude Code Docs — CLI reference"
-[2]: https://code.claude.com/docs/en/sub-agents "Claude Code Docs — Create custom subagents"
-[3]: https://code.claude.com/docs/en/costs "Claude Code Docs — Manage costs effectively"
+[1]: https://code.claude.com/docs/en/agent-teams "Claude Code Docs — Agent teams"
