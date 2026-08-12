@@ -97,7 +97,7 @@ Luego escribe:
 /explicar-swarm
 ```
 
-Claude lee la conclusión del Nest, el reporte Swarm si existe y el caso. Crea `resultados/debrief-swarm.md`, donde explica qué resolvió el Nest, qué intentó hacer el Swarm, por qué tardó más, si la comunicación adicional cambió la decisión y qué arquitectura mínima recomienda para Cobranza Pro.
+Claude lee la conclusión del Nest, el reporte Swarm si existe y el caso. Crea `resultados/debrief-swarm.md`, donde compara qué resolvió el Nest contra qué capacidad adicional intentó agregar el Swarm y cierra con el veredicto de este caso: **Nest es suficiente**, porque un líder puede integrar reportes claros sin negociación iterativa entre pares.
 
 > Si el debrief concluye que Nest basta, no es una respuesta menor: significa que evitaste complejidad innecesaria.
 
