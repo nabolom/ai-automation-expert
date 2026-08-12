@@ -70,21 +70,22 @@ Ahora ejecuta el mismo caso como un Agent Team:
 bash scripts/correr-swarm.sh
 ```
 
-El script activa Agent Teams y pide cuatro teammates, tareas compartidas y mensajes directos entre Riesgo, Ventas y Operaciones. Busca esas tres señales antes de mirar la respuesta final.
+El líder conserva Producto y el script crea tres teammates: Ventas, Riesgo y Operaciones. Verás cuatro tareas compartidas y solo dos mensajes directos obligatorios: Riesgo → Ventas y la respuesta de Ventas. Es una demostración breve de coordinación, no una investigación larga.
 
-La corrida cuenta como Swarm cuando aparece:
+La corrida cuenta como Swarm cuando aparecen:
 
 ```text
-SWARM COMPLETADO: equipo, tareas compartidas y mensajes entre pares observados.
+SALIDA GUARDADA: resultados/reporte-swarm.md
+SWARM COMPLETADO: teammates, tareas compartidas y dos mensajes entre pares observados.
 ```
 
-Agent Teams es experimental. Si en 90 segundos no aparecen teammates, escribe `/exit`, no intentes depurarlo durante el taller y usa el Plan B del facilitador. El facilitador corre la misma ruta en pantalla y guía el contraste.
+El archivo `resultados/reporte-swarm.md` deja la decisión, evidencia por rol, comunicación observada y qué cambió —o no— frente al Nest. Agent Teams es experimental. Si en 90 segundos no aparecen teammates, escribe `/exit`; no intentes depurarlo durante el taller. El debrief de Claude puede explicar el contraste incluso sin una corrida válida.
 
 ---
 
-## 6. Deja que Claude te ayude a decidir la arquitectura
+## 6. Deja que Claude explique qué sucedió
 
-Abre Claude Code dentro del repo:
+No necesitas terminar una entrevista larga durante el taller. Abre Claude Code dentro del repo:
 
 ```bash
 claude
@@ -93,18 +94,18 @@ claude
 Luego escribe:
 
 ```text
-/decidir-arquitectura
+/explicar-swarm
 ```
 
-Claude te entrevista sobre lo que viste en Nest y Swarm, pide ejemplos concretos y te pregunta qué comunicación necesitaba realmente el caso. No guarda nada hasta que confirmes tu decisión.
+Claude lee la conclusión del Nest, el reporte Swarm si existe y el caso. Crea `resultados/debrief-swarm.md`, donde explica qué resolvió el Nest, qué intentó hacer el Swarm, por qué tardó más, si la comunicación adicional cambió la decisión y qué arquitectura mínima recomienda para Cobranza Pro.
 
-Después de confirmar, crea `resultados/decision-arquitectonica.md`. La decisión puede ser **un solo agente**, **Nest**, **Swarm** o **evidencia insuficiente**.
+> Si el debrief concluye que Nest basta, no es una respuesta menor: significa que evitaste complejidad innecesaria.
 
-> Si eliges Nest, no es una respuesta menor: significa que evitaste complejidad innecesaria.
+`/decidir-arquitectura` queda como actividad opcional para quien quiera defender una decisión propia en más detalle.
 
 ## 7. Crea una entrega descargable
 
-Una vez que tengas la conclusión del Nest y la decisión arquitectónica, abre Claude Code dentro del repo:
+Una vez que tengas la conclusión del Nest y el debrief automático, abre Claude Code dentro del repo:
 
 ```bash
 claude
@@ -116,7 +117,7 @@ Luego escribe:
 /cerrar-s5
 ```
 
-Se creará `resultados/entrega-s5.md`, un archivo único con la conclusión del caso, tu decisión de arquitectura y la evidencia disponible. Adjunta ese archivo desde la carpeta `resultados` en Finder, Explorador de archivos o la plataforma donde entregarás tu trabajo.
+Se creará `resultados/entrega-s5.md`, un archivo único con la conclusión del caso, el debrief de Claude y la evidencia disponible. Adjunta ese archivo desde la carpeta `resultados` en Finder, Explorador de archivos o la plataforma donde entregarás tu trabajo.
 
 ## 8. Configura tu propio sistema
 
